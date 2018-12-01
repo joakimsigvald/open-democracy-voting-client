@@ -5,7 +5,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"google.golang.org/appengine"
@@ -17,5 +19,22 @@ func main() {
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Open democracy voting app")
+	phrases := loadPhrases()
+	fmt.Fprintln(w, phrases["headline"]["en"])
+}
+
+func loadPhrases() map[string]map[string]string {
+	content, err := ioutil.ReadFile("resources/phrases.json")
+	check(err)
+	phrasesJson := string(content)
+	phrases := map[string]map[string]string{}
+	err = json.Unmarshal([]byte(phrasesJson), &phrases)
+	check(err)
+	return phrases
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
