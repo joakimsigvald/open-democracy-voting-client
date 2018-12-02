@@ -2,25 +2,34 @@
 // Use of this source code is governed by the Apache 2.0
 // license that can be found in the LICENSE file.
 
-package main
+package language
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"net/http"
-
-	"google.golang.org/appengine"
 )
 
-func main() {
-	http.HandleFunc("/", handle)
-	appengine.Main()
+var phrases map[string]map[string]string
+
+const defaultLang = "sv"
+
+func init() {
+	phrases = loadPhrases()
 }
 
-func handle(w http.ResponseWriter, r *http.Request) {
-	phrases := loadPhrases()
-	fmt.Fprintln(w, phrases["headline"]["en"])
+func Translator(lang string) func(string) string {
+	return func(term string) string {
+		phrase := phrases[term]
+		translation, ok := phrase[lang]
+		if ok {
+			return translation
+		}
+		translation, ok = phrase[defaultLang]
+		if ok {
+			return translation
+		}
+		return term
+	}
 }
 
 func loadPhrases() map[string]map[string]string {
