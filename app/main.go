@@ -19,7 +19,7 @@ func main() {
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {
-	lang := urlparser.PathParameter(r)
+	lang := urlparser.QueryParameter(r, "lang")
 	t := language.Translator(lang)
 
 	fmt.Fprintln(w, "<html>")

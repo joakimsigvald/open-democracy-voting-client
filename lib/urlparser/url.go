@@ -10,3 +10,7 @@ func PathParameter(r *http.Request) string {
 	segments := strings.Split(path, "/")
 	return segments[len(segments)-1]
 }
+
+func QueryParameter(r *http.Request, name string) string {
+	return r.URL.Query().Get(name)
+}
