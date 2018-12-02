@@ -3,5 +3,20 @@
     {
         "sv": "Open democracy omröstningsklient",
         "en": "Open democracy voting app"
+    },
+    "vote": 
+    {
+        "sv": "Rösta",
+        "en": "Vote"
+    },
+    "yes": 
+    {
+        "sv": "Ja",
+        "en": "Yes"
+    },
+    "no": 
+    {
+        "sv": "Nej",
+        "en": "No"
     }
 }

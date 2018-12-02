@@ -21,5 +21,16 @@ func main() {
 func handle(w http.ResponseWriter, r *http.Request) {
 	lang := urlparser.PathParameter(r)
 	t := language.Translator(lang)
-	fmt.Fprintln(w, t("headline"))
+
+	fmt.Fprintln(w, "<html>")
+	fmt.Fprintln(w, "<head>")
+	fmt.Fprintln(w, "<link rel='stylesheet' type='text/css' href='/styles/app.css'>")
+	fmt.Fprintln(w, "</head>")
+	fmt.Fprintln(w, "<body>")
+	fmt.Fprintln(w, "<h1 class='hdr'>"+t("headline")+"</h1>")
+	fmt.Fprintln(w, "<h2>"+t("vote")+"</h2>")
+	fmt.Fprint(w, "<a href='/yes' class='button'>"+t("yes")+"</a>")
+	fmt.Fprint(w, "<a href='/no' class='button'>"+t("no")+"</a>")
+	fmt.Fprintln(w, "</body>")
+	fmt.Fprintln(w, "</html>")
 }
