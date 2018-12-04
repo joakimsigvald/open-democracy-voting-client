@@ -7,28 +7,25 @@ package language
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
+	"open-democracy-voting-client/lib/url"
 )
 
 var phrases map[string]map[string]string
-
-const defaultLang = "sv"
 
 func init() {
 	phrases = loadPhrases()
 }
 
-func Translator(lang string) func(string) string {
+func Translator(r *http.Request) func(string) string {
+	lang := url.GetLang(r)
 	return func(term string) string {
 		phrase := phrases[term]
 		translation, ok := phrase[lang]
 		if ok {
 			return translation
 		}
-		translation, ok = phrase[defaultLang]
-		if ok {
-			return translation
-		}
-		return term
+		return term + ":" + lang
 	}
 }
 

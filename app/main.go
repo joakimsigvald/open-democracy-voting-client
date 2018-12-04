@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"open-democracy-voting-client/lib/language"
-	"open-democracy-voting-client/lib/urlparser"
+	"open-democracy-voting-client/lib/url"
 
 	"google.golang.org/appengine"
 )
@@ -19,8 +19,8 @@ func main() {
 }
 
 func handle(w http.ResponseWriter, r *http.Request) {
-	lang := urlparser.QueryParameter(r, "lang")
-	t := language.Translator(lang)
+	t := language.Translator(r)
+	u := url.UrlFactory(r)
 
 	fmt.Fprintln(w, "<html>")
 	fmt.Fprintln(w, "<head>")
@@ -29,8 +29,8 @@ func handle(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "<body>")
 	fmt.Fprintln(w, "<h1 class='hdr'>"+t("headline")+"</h1>")
 	fmt.Fprintln(w, "<h2>"+t("vote")+"</h2>")
-	fmt.Fprint(w, "<a href='/yes' class='button'>"+t("yes")+"</a>")
-	fmt.Fprint(w, "<a href='/no' class='button'>"+t("no")+"</a>")
+	fmt.Fprint(w, "<a href='"+u("yes")+"' class='button'>"+t("yes")+"</a>")
+	fmt.Fprint(w, "<a href='"+u("no")+"' class='button'>"+t("no")+"</a>")
 	fmt.Fprintln(w, "</body>")
 	fmt.Fprintln(w, "</html>")
 }
